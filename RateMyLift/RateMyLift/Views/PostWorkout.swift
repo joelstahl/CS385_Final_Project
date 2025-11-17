@@ -1,0 +1,18 @@
+//
+//  PostWorkout.swift
+//  RateMyLift
+//
+//  Created by Devyn Myles on 11/17/25.
+//
+
+import SwiftUI
+
+struct PostWorkout: View {
+    var body: some View {
+        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+    }
+}
+
+#Preview {
+    PostWorkout()
+}
