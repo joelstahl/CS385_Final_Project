@@ -35,15 +35,20 @@ final class Post {
     var caption: String
     var rating: Float
     var comment: [Comment]
-    
-    init(photo: Data?, timestamp: Date, caption: String, rating: Float, comment: [Comment]) {
+
+    @Relationship(inverse: \User.posts)
+    var author: User?      // <— who made the post, this is used for the main feed instead of
+                           // going through every users post array
+    init(photo: Data?, timestamp: Date, caption: String, rating: Float, comment: [Comment], author: User? = nil) {
         self.photo = photo
         self.timestamp = timestamp
         self.caption = caption
         self.rating = rating
         self.comment = comment
+        self.author = author
     }
 }
+
 
 @Model
 final class Comment {

@@ -10,9 +10,22 @@
 		692CEB4C2ECA991300CB0EA2 /* RateMyLift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RateMyLift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		69FE7B592ED246B700B63541 /* Exceptions for "RateMyLift" folder in "RateMyLift" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 692CEB4B2ECA991300CB0EA2 /* RateMyLift */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		692CEB4E2ECA991300CB0EA2 /* RateMyLift */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				69FE7B592ED246B700B63541 /* Exceptions for "RateMyLift" folder in "RateMyLift" target */,
+			);
 			path = RateMyLift;
 			sourceTree = "<group>";
 		};
@@ -252,9 +265,12 @@
 				CODE_SIGN_ENTITLEMENTS = RateMyLift/RateMyLift.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = QP3L9TKDX7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = RateMyLift/Info.plist;
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Allow app to track HealthData for workout Stats?";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = 6.0;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -281,9 +297,12 @@
 				CODE_SIGN_ENTITLEMENTS = RateMyLift/RateMyLift.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = QP3L9TKDX7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = RateMyLift/Info.plist;
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Allow app to track HealthData for workout Stats?";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = 6.0;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

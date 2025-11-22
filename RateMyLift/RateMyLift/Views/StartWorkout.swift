@@ -6,12 +6,41 @@
 //
 
 import SwiftUI
+import HealthKit
 
 struct StartWorkout: View {
+    @State private var stepCount: Double = 0
+    let healthKitManager = HealthKitManager()
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+//        VStack {
+//            Text("Today's Steps").font(.title)
+//            Text("\(Int(stepCount))").bold().font(.largeTitle)
+//            
+//            Button("Fetch Steps") {
+//                healthKitManager.fetchStepCount { steps in
+//                    stepCount = steps
+//                }
+//            }
+//        }
+//        .buttonStyle(.borderedProminent)
+//        .tint(.green)
+//        .onAppear {
+//            requestHealthKitAccess()
+//        }
+//    }
+//    
+//    func requestHealthKitAccess() {
+//        healthKitManager.requestAuthorization { success, error in
+//            if let error = error {
+//                print("HealthKit auth failed: \(error.localizedDescription)")
+//            } else {
+//                print("HealthKit auth was successful: \(success)")
+//            }
+//        }
     }
 }
+
 
 #Preview {
     StartWorkout()
