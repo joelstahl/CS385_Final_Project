@@ -13,31 +13,31 @@ struct StartWorkout: View {
     let healthKitManager = HealthKitManager()
     
     var body: some View {
-//        VStack {
-//            Text("Today's Steps").font(.title)
-//            Text("\(Int(stepCount))").bold().font(.largeTitle)
-//            
-//            Button("Fetch Steps") {
-//                healthKitManager.fetchStepCount { steps in
-//                    stepCount = steps
-//                }
-//            }
-//        }
-//        .buttonStyle(.borderedProminent)
-//        .tint(.green)
-//        .onAppear {
-//            requestHealthKitAccess()
-//        }
-//    }
-//    
-//    func requestHealthKitAccess() {
-//        healthKitManager.requestAuthorization { success, error in
-//            if let error = error {
-//                print("HealthKit auth failed: \(error.localizedDescription)")
-//            } else {
-//                print("HealthKit auth was successful: \(success)")
-//            }
-//        }
+        VStack {
+            Text("Today's Steps").font(.title)
+            Text("\(Int(stepCount))").bold().font(.largeTitle)
+            
+            Button("Fetch Steps") {
+                healthKitManager.fetchStepCount { steps in
+                    stepCount = steps
+                }
+            }
+        }
+        .buttonStyle(.borderedProminent)
+        .tint(.red)
+        .onAppear {
+            requestHealthKitAccess()
+        }
+    }
+    
+    func requestHealthKitAccess() {
+        healthKitManager.requestAuthorization { success, error in
+            if let error = error {
+                print("HealthKit auth failed: \(error.localizedDescription)")
+            } else {
+                print("HealthKit auth was successful: \(success)")
+            }
+        }
     }
 }
 

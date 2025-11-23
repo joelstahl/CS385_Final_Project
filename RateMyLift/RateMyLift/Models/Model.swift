@@ -26,6 +26,15 @@ final class User {
         self.friendsList = friendsList
         self.active = active
     }
+    
+    init() {
+        self.timestamp = Date()
+        self.userName = "New User"
+        self.profilePicture = nil
+        self.posts = []
+        self.friendsList = []
+        self.active = false
+    }
 }
 
 @Model
@@ -47,6 +56,15 @@ final class Post {
         self.comment = comment
         self.author = author
     }
+    
+    init() {
+        self.photo = nil
+        self.timestamp = Date()
+        self.caption = "This is a new post"
+        self.rating = 7.5
+        self.comment = [Comment()]
+        self.author = User()
+    }
 }
 
 
@@ -61,5 +79,11 @@ final class Comment {
         self.timestamp = timestamp
         self.user = user
         self.comment = comment
+    }
+    
+    init() {
+        self.timestamp = Date()
+        self.user = "Anonymous"
+        self.comment = "This is a new comment"
     }
 }
