@@ -30,7 +30,6 @@ struct MainFeed: View {
                 }
                 
                 
-                
                 //                    List(posts) { post in
                 //                        VStack(alignment: .leading, spacing: 8) {
                 //                            // author info

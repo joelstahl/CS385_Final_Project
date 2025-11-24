@@ -24,11 +24,13 @@ struct PostDetails: View {
                 }
                 HStack() {
                     Text("\(post.rating)")
+                    Image(systemName: "star.fill")
                     Text("\(post.workout!.name)")
                 }
                 .font(.title2)
                 .bold()
                 .padding()
+                
                 HStack() {
                     Text("Total Cals:").bold()
                     Text("\(post.workout!.totalcalories)")

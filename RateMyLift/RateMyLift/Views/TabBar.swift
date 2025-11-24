@@ -22,10 +22,13 @@ struct TabBar: View {
                 .tabItem{
                     Label("Post Workout", systemImage: "square.and.arrow.up")
                 }
-            ProfileView()
-                .tabItem{
-                    Label("Profile", systemImage: "person.circle")
-                }
+            
+            NavigationStack {
+                ProfileView()
+            }
+                    .tabItem{
+                        Label("Profile", systemImage: "person.circle")
+                    }
         }
     }
 }

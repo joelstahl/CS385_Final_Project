@@ -75,7 +75,7 @@ struct DuringWorkoutView: View {
                         .environmentObject(session)
                 }
             )
-            
+
         }
         .buttonStyle(.borderedProminent)
         .tint(.red)

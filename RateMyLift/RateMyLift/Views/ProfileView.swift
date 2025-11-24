@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct ProfileView: View {
+    //Should take user in and query for [Post]
+    @State var post: Post = Post()
+    
     let columns = [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())]
     let imageDimension = UIScreen.main.bounds.width / 3
     
@@ -108,16 +111,19 @@ struct ProfileView: View {
                     }
                 }.buttonStyle(.borderedProminent).tint(.red).foregroundStyle(.white).padding(.vertical, 8)
                 
-                LazyVGrid(columns: columns, spacing: 0){
-                    ForEach(0..<15, id: \.self){ index in
-                        Image("Sam_and_cat")
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: imageDimension, height: imageDimension)
-                            .border(Color.white)
-                            .clipped()
+                ScrollView{
+                    LazyVGrid(columns: columns, spacing: 0) {
+                        ForEach(0..<15, id: \.self) { index in
+                            NavigationLink{
+                                PostDetails(post: post)
+                            } label: {
+                                PostCard()
+                            }
+                        }
                     }
+                    
                 }
+                
                 
             }
             .padding(8)
@@ -127,5 +133,7 @@ struct ProfileView: View {
 
 
 #Preview {
-    ProfileView()
+    NavigationStack {
+        ProfileView()
+    }
 }

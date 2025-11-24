@@ -60,13 +60,14 @@ final class Post {
         self.workout = workout
     }
     
+    
     init() {
         self.photo = nil
         self.timestamp = Date()
         self.caption = "This is a new post"
         self.rating = 7.5
         self.comment = [Comment()]
-        self.author = User()
+        self.author = nil
         self.workout = Workout()
     }
     //This causes infinite recursion!!!!!

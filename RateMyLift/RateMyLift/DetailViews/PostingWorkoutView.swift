@@ -23,6 +23,7 @@ struct PostingWorkoutView: View {
         VStack(alignment: .leading, spacing: 8) {
             Text(workout.name)
                 .font(.title)
+                .bold()
                 .padding()
             
             Text("Start: \(workout.start, format: Date.FormatStyle(date: .numeric))").padding(.horizontal, 8)

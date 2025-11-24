@@ -19,7 +19,7 @@ struct PostWorkout: View {
             List{
                 ForEach(workouts){ workout in
                     NavigationLink(destination: PostingWorkoutView(workout: workout)){
-                        Text(workout.name)
+                        Text(workout.name + "\(workout.start)")
                     }
                 }
             }
