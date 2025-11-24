@@ -8,38 +8,45 @@
 import SwiftUI
 import HealthKit
 
+import SwiftUI
+import HealthKit
+
 struct StartWorkout: View {
-    @State private var stepCount: Double = 0
-    let healthKitManager = HealthKitManager()
+    @StateObject private var session = WorkoutSession()
+    @State private var showDuringWorkout = false
     
     var body: some View {
-        VStack {
-            Text("Today's Steps").font(.title)
-            Text("\(Int(stepCount))").bold().font(.largeTitle)
-            
-            Button("Fetch Steps") {
-                healthKitManager.fetchStepCount { steps in
-                    stepCount = steps
+        NavigationStack {
+            VStack(spacing: 20) {
+                Button("Start Workout") {
+                    session.reset()
+                    session.startDate = Date()
+                    showDuringWorkout = true
                 }
+                .buttonStyle(.borderedProminent)
+                
+                // If you want, you can show last workout stats here later
+                // using session.steps, session.calories, etc.
+                
+                NavigationLink(
+                    "",
+                    isActive: $showDuringWorkout,
+                    destination: {
+                        DuringWorkoutView()
+                            .environmentObject(session)
+                    }
+                )
+                .hidden()
             }
-        }
-        .buttonStyle(.borderedProminent)
-        .tint(.red)
-        .onAppear {
-            requestHealthKitAccess()
-        }
-    }
-    
-    func requestHealthKitAccess() {
-        healthKitManager.requestAuthorization { success, error in
-            if let error = error {
-                print("HealthKit auth failed: \(error.localizedDescription)")
-            } else {
-                print("HealthKit auth was successful: \(success)")
-            }
+            .padding()
         }
     }
 }
+
+#Preview {
+    StartWorkout()
+}
+
 
 
 #Preview {

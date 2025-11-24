@@ -29,83 +29,108 @@ class HealthKitManager {
         }
     }
     
-    //Fetch StepCountData
-    func fetchStepCount(completion: @escaping (Double) -> Void){
-        let stepType = HKQuantityType.quantityType(forIdentifier: .stepCount)!
-        let startDate = Calendar.current.startOfDay(for: Date()) //Todays Date
-        let predicate = HKQuery.predicateForSamples(withStart: startDate, end: Date(), options: .strictStartDate)
-        
-        let query = HKStatisticsQuery(quantityType: stepType, quantitySamplePredicate: predicate, options: .cumulativeSum){
-            _, result, _ in
-            
-            let stepCount = result?.sumQuantity()?.doubleValue(for: .count()) ?? 0
-            
-            DispatchQueue.main.async {
-                completion(stepCount)
+    // MARK: - Steps
+        func fetchStepCount(from startDate: Date,
+                            to endDate: Date,
+                            completion: @escaping (Double) -> Void) {
+            let stepType = HKQuantityType.quantityType(forIdentifier: .stepCount)!
+            let predicate = HKQuery.predicateForSamples(
+                withStart: startDate,
+                end: endDate,
+                options: .strictStartDate
+            )
+
+            let query = HKStatisticsQuery(
+                quantityType: stepType,
+                quantitySamplePredicate: predicate,
+                options: .cumulativeSum
+            ) { _, result, _ in
+                let stepCount = result?.sumQuantity()?.doubleValue(for: .count()) ?? 0
+                DispatchQueue.main.async {
+                    completion(stepCount)
+                }
             }
+
+            healthStore.execute(query)
         }
-        healthStore.execute(query)
-    }
-    
-    //Calories
-    func fetchActiveEnergyBurned(completion: @escaping (Double) -> Void){
-        let calorieType = HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned)!
-        let startDate = Calendar.current.startOfDay(for: Date()) //Todays Date
-        let predicate = HKQuery.predicateForSamples(withStart: startDate, end: Date(), options: .strictStartDate)
-        
-        let query = HKStatisticsQuery(quantityType: calorieType, quantitySamplePredicate: predicate, options: .cumulativeSum){
-            _, result, _ in
-            
-            let calorieCount = result?.sumQuantity()?.doubleValue(for: HKUnit.kilocalorie()) ?? 0 //Calories type is in kilocalorie
-            
-            DispatchQueue.main.async {
-                completion(calorieCount)
+
+        // MARK: - Active Energy
+        func fetchActiveEnergyBurned(from startDate: Date,
+                                     to endDate: Date,
+                                     completion: @escaping (Double) -> Void) {
+            let calorieType = HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned)!
+            let predicate = HKQuery.predicateForSamples(
+                withStart: startDate,
+                end: endDate,
+                options: .strictStartDate
+            )
+
+            let query = HKStatisticsQuery(
+                quantityType: calorieType,
+                quantitySamplePredicate: predicate,
+                options: .cumulativeSum
+            ) { _, result, _ in
+                let calories = result?.sumQuantity()?.doubleValue(for: .kilocalorie()) ?? 0
+                DispatchQueue.main.async {
+                    completion(calories)
+                }
             }
+
+            healthStore.execute(query)
         }
-        healthStore.execute(query)
-    }
-    
-    //Fetch Heart rate because its an average
-    func fetchAverageHeartRateToday(completion: @escaping (Double) -> Void) {
-        let heartRateType = HKQuantityType.quantityType(forIdentifier: .heartRate)!
-        let startDate = Calendar.current.startOfDay(for: Date())
-        let predicate = HKQuery.predicateForSamples(withStart: startDate, end: Date(), options: .strictStartDate)
-        
-        let query = HKStatisticsQuery(quantityType: heartRateType, quantitySamplePredicate: predicate, options: .discreteAverage) {
-            _, result, _ in
-            
-            let unit = HKUnit.count().unitDivided(by: HKUnit.minute())
-            let avgHR = result?.averageQuantity()?.doubleValue(for: unit) ?? 0
-            
-            DispatchQueue.main.async {
-                completion(avgHR)
+
+        // MARK: - Average Heart Rate
+        func fetchAverageHeartRate(from startDate: Date,
+                                   to endDate: Date,
+                                   completion: @escaping (Double) -> Void) {
+            let heartRateType = HKQuantityType.quantityType(forIdentifier: .heartRate)!
+            let predicate = HKQuery.predicateForSamples(
+                withStart: startDate,
+                end: endDate,
+                options: .strictStartDate
+            )
+
+            let query = HKStatisticsQuery(
+                quantityType: heartRateType,
+                quantitySamplePredicate: predicate,
+                options: .discreteAverage
+            ) { _, result, _ in
+                let unit = HKUnit.count().unitDivided(by: .minute())
+                let avgHR = result?.averageQuantity()?.doubleValue(for: unit) ?? 0
+                DispatchQueue.main.async {
+                    completion(avgHR)
+                }
             }
+
+            healthStore.execute(query)
         }
-        
-        healthStore.execute(query)
-    }
-    
-    //Exercise Time
-    func fetchExerciseTimeToday(completion: @escaping (Double) -> Void) {
-        guard let exerciseType = HKQuantityType.quantityType(forIdentifier: .appleExerciseTime) else {
-            completion(0)
-            return
-        }
-        
-        let startDate = Calendar.current.startOfDay(for: Date())
-        let predicate = HKQuery.predicateForSamples(withStart: startDate, end: Date(), options: .strictStartDate)
-        
-        let query = HKStatisticsQuery(quantityType: exerciseType, quantitySamplePredicate: predicate, options: .cumulativeSum) {
-            _, result, _ in
-            
-            let minutes = result?.sumQuantity()?.doubleValue(for: HKUnit.minute()) ?? 0
-            
-            DispatchQueue.main.async {
-                completion(minutes)
+
+        // MARK: - Exercise Time
+        func fetchExerciseTime(from startDate: Date,
+                               to endDate: Date,
+                               completion: @escaping (Double) -> Void) {
+            guard let exerciseType = HKQuantityType.quantityType(forIdentifier: .appleExerciseTime) else {
+                completion(0)
+                return
             }
+            
+            let predicate = HKQuery.predicateForSamples(
+                withStart: startDate,
+                end: endDate,
+                options: .strictStartDate
+            )
+            
+            let query = HKStatisticsQuery(
+                quantityType: exerciseType,
+                quantitySamplePredicate: predicate,
+                options: .cumulativeSum
+            ) { _, result, _ in
+                let minutes = result?.sumQuantity()?.doubleValue(for: .minute()) ?? 0
+                DispatchQueue.main.async {
+                    completion(minutes)
+                }
+            }
+            
+            healthStore.execute(query)
         }
-        
-        healthStore.execute(query)
-    }
-    
 }

@@ -10,29 +10,29 @@ import SwiftData
 
 @Model
 final class User {
-    var timestamp: Date
     var userName: String
     var profilePicture: Data?
     var posts: [Post]
     var friendsList: [User]
+    var workouts: [Workout]
     var active: Bool
     
 
-    init(timestamp: Date, userName: String, profilePicture: Data?, posts: [Post], friendsList: [User], active: Bool = false) {
-        self.timestamp = timestamp
+    init( userName: String, profilePicture: Data?, posts: [Post], friendsList: [User], workouts: [Workout], active: Bool = false) {
         self.userName = userName
         self.profilePicture = profilePicture
         self.posts = posts
         self.friendsList = friendsList
+        self.workouts = workouts
         self.active = active
     }
     
     init() {
-        self.timestamp = Date()
         self.userName = "New User"
         self.profilePicture = nil
         self.posts = []
         self.friendsList = []
+        self.workouts = []
         self.active = false
     }
 }
@@ -44,17 +44,19 @@ final class Post {
     var caption: String
     var rating: Float
     var comment: [Comment]
+    var workout: Workout?
 
     @Relationship(inverse: \User.posts)
     var author: User?      // <— who made the post, this is used for the main feed instead of
                            // going through every users post array
-    init(photo: Data?, timestamp: Date, caption: String, rating: Float, comment: [Comment], author: User? = nil) {
+    init(photo: Data?, timestamp: Date, caption: String, rating: Float, comment: [Comment], author: User? = nil, workout: Workout? = nil) {
         self.photo = photo
         self.timestamp = timestamp
         self.caption = caption
         self.rating = rating
         self.comment = comment
         self.author = author
+        self.workout = workout
     }
     
     init() {
@@ -64,6 +66,7 @@ final class Post {
         self.rating = 7.5
         self.comment = [Comment()]
         self.author = User()
+        self.workout = Workout()
     }
 }
 
@@ -73,7 +76,6 @@ final class Comment {
     var timestamp: Date
     var user: String
     var comment: String
-    
     
     init(timestamp: Date, user: String, comment: String) {
         self.timestamp = timestamp
