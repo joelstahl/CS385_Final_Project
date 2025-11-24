@@ -23,7 +23,7 @@ struct StartWorkout: View {
                     session.startDate = Date()
                     showDuringWorkout = true
                 }
-                .buttonStyle(.borderedProminent)
+                .buttonStyle(.borderedProminent).tint(.red)
                 
                 // If you want, you can show last workout stats here later
                 // using session.steps, session.calories, etc.
