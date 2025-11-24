@@ -8,11 +8,26 @@
 import SwiftUI
 
 struct PostWorkout: View {
+    @State var workouts: [Workout]
+    
+    var postWorkoutSheet: Bool = false
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        
+        NavigationStack{
+            Text("Choose a workout to post").font(.headline).italic()
+            List{
+                ForEach(workouts){ workout in
+                    NavigationLink(destination: PostingWorkoutView(workout: workout)){
+                        Text(workout.name)
+                    }
+                }
+            }
+            .navigationTitle(Text("Workouts"))
+        }
     }
 }
 
 #Preview {
-    PostWorkout()
+    PostWorkout(workouts: [Workout(), Workout(), Workout(),])
 }

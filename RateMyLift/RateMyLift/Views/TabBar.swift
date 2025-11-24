@@ -18,7 +18,7 @@ struct TabBar: View {
                 .tabItem{
                     Label("Start Workout", systemImage: "plus.circle")
                 }
-            PostWorkout()
+            PostWorkout(workouts: [Workout(), Workout(), Workout()])
                 .tabItem{
                     Label("Post Workout", systemImage: "square.and.arrow.up")
                 }

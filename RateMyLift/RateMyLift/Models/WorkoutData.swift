@@ -13,11 +13,11 @@ final class Workout {
     var name: String
     var start: Date
     var end: Date?
-    var totalcalories: Double?
-    var avgHeartRate: Double?
+    var totalcalories: Double
+    var avgHeartRate: Double
     var exercises: [Exercise]
     
-    init(name: String, start: Date, end: Date? = nil, totalcalories: Double? = nil, avgHeartRate: Double? = nil, exercises: [Exercise] = []) {
+    init(name: String, start: Date, end: Date? = nil, totalcalories: Double, avgHeartRate: Double, exercises: [Exercise] = []) {
         self.name = name
         self.exercises = exercises
         self.start = start
@@ -31,8 +31,8 @@ final class Workout {
         self.exercises = [Exercise()]
         self.start = Date()
         self.end = nil
-        self.totalcalories = nil
-        self.avgHeartRate = nil
+        self.totalcalories = 543.9
+        self.avgHeartRate = 88.0
     }
 }
 

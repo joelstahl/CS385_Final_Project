@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftData
+import PhotosUI
 
 @Model
 final class User {
@@ -30,7 +31,7 @@ final class User {
     init() {
         self.userName = "New User"
         self.profilePicture = nil
-        self.posts = []
+        self.posts = [Post()]
         self.friendsList = []
         self.workouts = []
         self.active = false
@@ -68,7 +69,20 @@ final class Post {
         self.author = User()
         self.workout = Workout()
     }
+    //This causes infinite recursion!!!!!
+    //Must fix later
 }
+//extension Post {
+//    static let sample = Post(
+//        photo: nil,
+//        timestamp: .now,
+//        caption: "Sample post",
+//        rating: 8.5,
+//        comment: [Comment()],
+//        author: nil,
+//        workout: nil
+//    )
+//}
 
 
 @Model
