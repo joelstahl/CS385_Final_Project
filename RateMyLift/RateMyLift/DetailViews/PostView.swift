@@ -9,6 +9,9 @@ import SwiftUI
 
 struct PostView: View {
     var username: String
+    @State private var showRatingSheet = false
+    @State private var showCommentSheet = false
+    @State private var newCommentText: String = ""
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0){
@@ -46,11 +49,16 @@ struct PostView: View {
             HStack{
                 HStack(spacing: 8){
                     Text("7.5").font(.title2)
-                    Button(action: {}){
+                    Button {
+                        showRatingSheet = true
+                    } label: {
                         Image(systemName: "mount.fill").font(.title2)
                     }
+                    
                     .tint(.red)
-                    Button(action: {}){
+                    Button{
+                        showCommentSheet = true
+                    } label: {
                         Image(systemName: "bubble.right.fill").font(.title2)
                     }
                     .tint(.red)
@@ -64,8 +72,19 @@ struct PostView: View {
             }
             .padding(.horizontal)
         }
+        .sheet(isPresented: $showRatingSheet) {
+            RateWorkout()
+        }
+        .sheet(isPresented: $showCommentSheet) {
+            CommentSheet(commentText: $newCommentText) {
+                // This closure runs when user taps "Post Comment"
+                // You can save newCommentText to your model / backend here
+                print("User wrote comment: \(newCommentText)")
+                }
+            }
+        }
     }
-}
+
 
 #Preview {
     PostView(username: "Sam Sulek")

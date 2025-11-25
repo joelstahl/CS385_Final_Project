@@ -11,7 +11,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		69FE7B592ED246B700B63541 /* Exceptions for "RateMyLift" folder in "RateMyLift" target */ = {
+		0BD3ED982ED6021F009D2072 /* Exceptions for "RateMyLift" folder in "RateMyLift" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -24,7 +24,7 @@
 		692CEB4E2ECA991300CB0EA2 /* RateMyLift */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				69FE7B592ED246B700B63541 /* Exceptions for "RateMyLift" folder in "RateMyLift" target */,
+				0BD3ED982ED6021F009D2072 /* Exceptions for "RateMyLift" folder in "RateMyLift" target */,
 			);
 			path = RateMyLift;
 			sourceTree = "<group>";
@@ -265,12 +265,9 @@
 				CODE_SIGN_ENTITLEMENTS = RateMyLift/RateMyLift.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = QP3L9TKDX7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = RateMyLift/Info.plist;
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "Share your stuff";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Updated stuff";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Allow app to track HealthData for workout Stats?";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -297,12 +294,9 @@
 				CODE_SIGN_ENTITLEMENTS = RateMyLift/RateMyLift.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = QP3L9TKDX7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = RateMyLift/Info.plist;
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "Share your stuff";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Updated stuff";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Allow app to track HealthData for workout Stats?";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
