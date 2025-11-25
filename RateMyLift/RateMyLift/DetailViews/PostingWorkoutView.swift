@@ -30,8 +30,8 @@ struct PostingWorkoutView: View {
             Text("End: \(workout.end ?? Date(), format: Date.FormatStyle(date: .numeric))").padding(.horizontal, 8)
             
             
-            Text("\(workout.avgHeartRate) BPM (Average)").padding(.horizontal, 8)
-            Text("\(workout.totalcalories) Total Calories Burned").padding(.horizontal, 8)
+            Text(String(format: "%.1f", workout.avgHeartRate) + " BPM (Average)").padding(.horizontal, 8)
+            Text(String(format: "%.1f", workout.totalcalories) + " Total Calories Burned").padding(.horizontal, 8)
             
             Text("Exercises:")
                 .font(.headline)

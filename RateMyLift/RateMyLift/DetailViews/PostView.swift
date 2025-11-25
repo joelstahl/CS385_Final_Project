@@ -12,6 +12,7 @@ struct PostView: View {
     @State private var showRatingSheet = false
     @State private var showCommentSheet = false
     @State private var newCommentText: String = ""
+    @State var showProfileViewSheet: Bool = false
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0){
@@ -21,7 +22,12 @@ struct PostView: View {
                     .frame(width: 36, height: 36)
                     .overlay(Image(systemName: "person.fill"))
                 VStack(alignment: .leading, spacing: 2){
-                    Text(username).font(.subheadline)
+                    Button{
+                        showProfileViewSheet = true
+                    }label:{
+                        Text(username)
+                            .fontWeight(.bold).foregroundStyle(.black)
+                    }
                 }
                 Spacer()
                 Button(action: {}){
@@ -29,12 +35,6 @@ struct PostView: View {
                 }
                 .buttonStyle(.borderedProminent)
                 .tint(.red)
-                
-                Button(action: {}){
-                    Image(systemName: "ellipsis")
-                        .rotationEffect(.degrees(90))
-                        .foregroundStyle(.red)
-                }
             }
             .padding(.horizontal)
             .padding(.vertical, 8)
@@ -82,8 +82,11 @@ struct PostView: View {
                 print("User wrote comment: \(newCommentText)")
                 }
             }
+        .sheet(isPresented: $showProfileViewSheet) {
+            ProfileView()
         }
     }
+}
 
 
 #Preview {

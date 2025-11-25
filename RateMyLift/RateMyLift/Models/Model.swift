@@ -29,7 +29,7 @@ final class User {
     }
     
     init() {
-        self.userName = "New User"
+        self.userName = "Current User"
         self.profilePicture = nil
         self.posts = [Post()]
         self.friendsList = []

@@ -11,6 +11,8 @@ struct ProfileView: View {
     //Should take user in and query for [Post]
     @State var post: Post = Post()
     
+    @State var showFriendsListSheet = false
+    
     let columns = [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())]
     let imageDimension = UIScreen.main.bounds.width / 3
     
@@ -18,8 +20,8 @@ struct ProfileView: View {
         ScrollView{
             VStack{
                 HStack{
-                    Image(systemName: "chevron.left")
-                        .font(.title2)
+//                    Image(systemName: "chevron.left")
+//                        .font(.title2)
                     
                     Spacer()
                     
@@ -101,7 +103,7 @@ struct ProfileView: View {
                 }
                 
                 HStack{
-                    Button(action: {}) {
+                    Button{showFriendsListSheet = true} label: {
                         Text("View Friends")
                     }
                     
@@ -121,12 +123,13 @@ struct ProfileView: View {
                             }
                         }
                     }
-                    
                 }
-                
                 
             }
             .padding(8)
+        }
+        .sheet(isPresented: $showFriendsListSheet) {
+            FriendsList()
         }
     }
 }

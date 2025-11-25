@@ -23,19 +23,20 @@ struct PostDetails: View {
                         .overlay(Image(systemName:"photo"))
                 }
                 HStack() {
-                    Text("\(post.rating)")
-                    Image(systemName: "star.fill")
+                    Text(String(format: "%.1f", post.rating))
+                    Image(systemName: "star.fill").foregroundStyle(.yellow)
                     Text("\(post.workout!.name)")
                 }
                 .font(.title2)
                 .bold()
                 .padding()
+                Divider()
                 
                 HStack() {
                     Text("Total Cals:").bold()
-                    Text("\(post.workout!.totalcalories)")
+                    Text(String(format: "%.1f", post.workout!.totalcalories))
                     Text("Avg HR:").bold()
-                    Text("\(post.workout!.avgHeartRate)")
+                    Text(String(format: "%.1f", post.workout!.avgHeartRate))
                 }
                 .padding()
                 ForEach(post.workout!.exercises){ exercise in
@@ -48,8 +49,8 @@ struct PostDetails: View {
                 }
                 
                 
-                
-                Text("Comments:").padding()
+                Divider()
+                Text("Comments:").padding().font(.title2).bold()
                 ForEach(post.comment){ comment in
                     HStack{
                         Text(comment.user + ":").bold()
