@@ -28,13 +28,13 @@ struct CreateUserView: View {
                 Section(header: Text("Username")){
                     TextField("Username", text: $username)
                 }
-                Section(header: Text("Add a Photo of the lift")){
+                Section(header: Text("Add A Picture For Your Profile")){
                     PhotosPicker(selection: $selectedPhoto, matching: .images, photoLibrary: .shared()){
-                        Label("Select a Workout Photo", systemImage: "photo.fill")
+                        Label("Select a Profile Picture", systemImage: "photo.fill")
                     }
-                    .buttonStyle(.borderedProminent)
-                    .tint(.red)
-                    .foregroundStyle(.white)
+                    .buttonStyle(.plain)
+                    .tint(.white)
+                    .foregroundStyle(.red)
                     
                     if let imageData = selectedPhotoData,
                        let uiImage = UIImage(data: imageData) {

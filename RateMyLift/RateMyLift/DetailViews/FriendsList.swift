@@ -18,7 +18,7 @@ struct FriendsList: View {
     
     var body: some View {
         NavigationStack{
-            List{
+            List{ //Add A Remove Friend Button
                 ForEach(friendsList){ friend in
                     HStack{
                         Circle()
@@ -33,8 +33,12 @@ struct FriendsList: View {
                 }
             }
             .navigationTitle(Text("Friends"))
+            //.onDelete(perform: delete())
         }
     }
+//    private func delete() {
+//        
+//    }
 }
 
 #Preview {
