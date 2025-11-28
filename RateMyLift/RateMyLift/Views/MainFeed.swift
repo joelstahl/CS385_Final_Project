@@ -9,13 +9,8 @@ import SwiftUI
 import SwiftData
 
 struct MainFeed: View {
-    //    @Query(
-    //            sort: \Post.timestamp,
-    //            order: .reverse)   // newest first
-    //
-    //        private var posts: [Post]
-    
-    var posts = [Post()]
+    @Query(sort: \Post.timestamp, order: .reverse)
+       private var posts: [Post]
     
     var body: some View {
         ZStack{
@@ -25,7 +20,7 @@ struct MainFeed: View {
                 Divider()
                 ScrollView(showsIndicators: false){
                     VStack(spacing:0){
-                        FeedList()
+                        FeedList(posts: posts)
                     }
                 }
                 

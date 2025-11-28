@@ -51,7 +51,7 @@ struct WorkoutSummary: View {
             Divider()
             
             Button("Save Workout") {
-                //saveWorkout()
+                saveWorkout()
             }
             .buttonStyle(.borderedProminent)
             

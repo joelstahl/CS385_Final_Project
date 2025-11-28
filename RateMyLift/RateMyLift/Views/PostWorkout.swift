@@ -6,9 +6,10 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct PostWorkout: View {
-    @State var workouts: [Workout]
+    @Query private var workouts: [Workout]
     
     var postWorkoutSheet: Bool = false
     
@@ -29,5 +30,5 @@ struct PostWorkout: View {
 }
 
 #Preview {
-    PostWorkout(workouts: [Workout(), Workout(), Workout(),])
+    PostWorkout()
 }

@@ -6,19 +6,14 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct TopFeedBar: View {
-    @State var activeUser: User = User()
+    @Environment(\.modelContext) private var modelContext
+    
+    @Query private var users: [User]      // all users in the store
+    @State private var activeUser: User?
     @State var showAddUserSheet: Bool = false
-    
-    
-    @State var users: [User] = [User(userName: "CBUM", profilePicture: nil, posts: [], friendsList: [], workouts: [], active: false),
-                                      User(userName: "TrenTwins", profilePicture: nil, posts: [], friendsList: [], workouts: [], active: false),
-                                      User(userName: "Arnold", profilePicture: nil, posts: [], friendsList: [], workouts: [], active: false),
-                                      User(userName: "Matt", profilePicture: nil, posts: [], friendsList: [], workouts: [], active: false),
-                                      User(userName: "TheRock", profilePicture: nil, posts: [], friendsList: [], workouts: [], active: false)
-    ]
-    
     var body: some View {
         HStack{
             Text("RateMyLift").font(.system(size:28, weight: .bold, design: .default))
@@ -26,12 +21,12 @@ struct TopFeedBar: View {
             Spacer()
             
             HStack(spacing: 16){
-                Text(activeUser.userName).font(.title3).bold().foregroundStyle(.red)
+                Text(activeUser?.userName ?? "No User").font(.title3).bold().foregroundStyle(.red)
                 
                 Menu {
                     ForEach(users) { user in
                         Button {
-                            activeUser = user
+                            setActive(user)
                         } label: {
                             Text(user.userName)
                         }
@@ -53,13 +48,28 @@ struct TopFeedBar: View {
         .sheet(isPresented: $showAddUserSheet) {
             CreateUserView()
         }
-//        .onAppear {
-//            // Optional: default to first user
-//            if activeUser == nil {
-//                activeUser = users.first
-//            }
-//        }
+        .onAppear {
+                    // pick the first active user if any, otherwise first user
+                    if let alreadyActive = users.first(where: { $0.active }) {
+                        activeUser = alreadyActive
+                    } else {
+                        activeUser = users.first
+                    }
+                }
         }
+    private func setActive(_ user: User) {
+        for u in users {
+            u.active = (u.id == user.id)
+        }
+        activeUser = user
+
+        do {
+            try modelContext.save()
+        } catch {
+            print("Failed to save active user: \(error)")
+        }
+    }
+
     }
 
 

@@ -10,7 +10,7 @@ import PhotosUI
 import SwiftData
 
 struct PostingWorkoutView: View {
-    @State var workout: Workout
+    var workout: Workout
     @State var selectedPhoto: PhotosPickerItem?
     @State var selectedPhotoData: Data?
     @State var caption: String = ""
@@ -18,6 +18,8 @@ struct PostingWorkoutView: View {
     
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
+    @Query(filter: #Predicate<User> { $0.active == true })
+    private var activeUsers: [User]
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -56,12 +58,19 @@ struct PostingWorkoutView: View {
             }
             Form{
                 Section(header: Text("Add a Photo of the lift")){
-                    PhotosPicker(selection: $selectedPhoto, matching: .images, photoLibrary: .shared()){
+                    PhotosPicker(selection: $selectedPhoto, matching: .images, photoLibrary: .shared()) {
                         Label("Select a Workout Photo", systemImage: "photo.fill")
                     }
                     .buttonStyle(.borderedProminent)
                     .tint(.red)
                     .foregroundStyle(.white)
+                    .onChange(of: selectedPhoto) { newItem in
+                        Task {
+                            if let data = try? await newItem?.loadTransferable(type: Data.self) {
+                                selectedPhotoData = data
+                            }
+                        }
+                    }
                     
                     if let imageData = selectedPhotoData,
                        let uiImage = UIImage(data: imageData) {
@@ -89,7 +98,7 @@ struct PostingWorkoutView: View {
                 
             }
             .padding()
-            Button(action: {}){
+            Button(action: createPost){
                 Text("Post Workout")
             }
             .buttonStyle(.borderedProminent)
@@ -97,6 +106,32 @@ struct PostingWorkoutView: View {
             .padding(.horizontal, 150)
         }
     }
+    private func createPost() {
+            guard let user = activeUsers.first else {
+                print("No active user to attach post to")
+                return
+            }
+
+            let post = Post(
+                photo: selectedPhotoData,
+                timestamp: Date(),
+                caption: caption,
+                rating: 7.5,              // or hook up RateWorkout later
+                comment: [],
+                author: user,
+                workout: workout
+            )
+
+            modelContext.insert(post)
+            user.posts.append(post)
+
+            do {
+                try modelContext.save()
+                dismiss()
+            } catch {
+                print("Error saving post: \(error)")
+            }
+        }
 }
 
 #Preview {

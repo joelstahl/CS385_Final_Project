@@ -7,9 +7,12 @@
 
 import SwiftUI
 import PhotosUI
+import SwiftData
 
 struct CreateUserView: View {
-    
+    @Environment(\.modelContext) private var modelContext
+    @Environment(\.dismiss) private var dismiss
+    @Query private var users: [User]
     //@State var user: User
     @State var username: String = ""
     @State var selectedPhoto: PhotosPickerItem?
@@ -29,12 +32,19 @@ struct CreateUserView: View {
                     TextField("Username", text: $username)
                 }
                 Section(header: Text("Add A Picture For Your Profile")){
-                    PhotosPicker(selection: $selectedPhoto, matching: .images, photoLibrary: .shared()){
+                    PhotosPicker(selection: $selectedPhoto, matching: .images, photoLibrary: .shared()) {
                         Label("Select a Profile Picture", systemImage: "photo.fill")
                     }
                     .buttonStyle(.plain)
                     .tint(.white)
                     .foregroundStyle(.red)
+                    .onChange(of: selectedPhoto) { newItem in
+                        Task {
+                            if let data = try? await newItem?.loadTransferable(type: Data.self) {
+                                selectedPhotoData = data
+                            }
+                        }
+                    }
                     
                     if let imageData = selectedPhotoData,
                        let uiImage = UIImage(data: imageData) {
@@ -64,8 +74,8 @@ struct CreateUserView: View {
                     }
                 }
                 Section{
-                    Button(action: {}){
-                        Text("Confirm and Create Profile")
+                    Button("Confirm and Create Profile") {
+                    createUser()
                     }
                     .buttonStyle(.borderedProminent)
                     .tint(.red)
@@ -76,10 +86,31 @@ struct CreateUserView: View {
         }
     }
     
-    
-    //on save create user save to model context
-}
+    private func createUser() {
+            // only one active user at a time
+            for u in users {
+                u.active = false
+            }
 
+            let newUser = User(
+                userName: username,
+                profilePicture: selectedPhotoData,
+                posts: [],
+                friendsList: [],
+                workouts: [],
+                active: true
+            )
+            modelContext.insert(newUser)
+
+            do {
+                try modelContext.save()
+                dismiss()
+            } catch {
+                print("Failed to save user: \(error)")
+            }
+        }
+    }
+    //on save create user save to model context
 #Preview {
     CreateUserView()
 }
