@@ -6,8 +6,13 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct TabBar: View {
+    
+    @Query(filter: #Predicate<User> { $0.active == true })
+    private var activeUsers: [User]
+    
     var body: some View {
         TabView{
             MainFeed()
@@ -24,9 +29,13 @@ struct TabBar: View {
                 }
             
             NavigationStack {
-                ProfileView()
+                if let active = activeUsers.first {
+                    ProfileView(user: active)   // <-- NOW CORRECT
+                } else {
+                    Text("No active user found")
+                }
             }
-                    .tabItem{
+                 .tabItem{
                         Label("Profile", systemImage: "person.circle")
                     }
         }

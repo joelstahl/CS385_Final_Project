@@ -5,165 +5,211 @@
 //  Created by Joel Stahl on 11/16/25.
 //
 
+//
+//  PostView.swift
+//  RateMyLift
+//
+
 import SwiftUI
 import SwiftData
 
 struct PostView: View {
-    @Bindable var post: Post      // <-- SwiftData model we’re showing/editing
+
+    @Environment(\.modelContext) private var modelContext
+    @Query(filter: #Predicate<User> { $0.active == true })
+    private var activeUsers: [User]
+
+    @Bindable var post: Post
 
     @State private var showRatingSheet = false
     @State private var showCommentSheet = false
-    @State private var newCommentText: String = ""
-    @State private var showProfileViewSheet: Bool = false
+    @State private var newCommentText = ""
+    @State private var showProfileViewSheet = false
 
-    // Convenience: current author + username
-    private var author: User? {
-        post.author
-    }
+    private var author: User? { post.author }
+    private var username: String { author?.userName ?? "Unknown User" }
+    private var activeUser: User? { activeUsers.first }
 
-    private var username: String {
-        author?.userName ?? "Unknown User"
-    }
-
+    // Body
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
+        VStack(alignment: .leading, spacing: 12) {
 
-            HStack {
+            // -------------------------------
+            // HEADER
+            // -------------------------------
+            HStack(spacing: 12) {
+
                 // Profile picture
                 if let data = author?.profilePicture,
                    let uiImage = UIImage(data: data) {
                     Image(uiImage: uiImage)
                         .resizable()
                         .scaledToFill()
-                        .frame(width: 36, height: 36)
+                        .frame(width: 40, height: 40)
                         .clipShape(Circle())
                 } else {
                     Circle()
                         .fill(.gray.opacity(0.4))
-                        .frame(width: 36, height: 36)
+                        .frame(width: 40, height: 40)
                         .overlay(Image(systemName: "person.fill"))
                 }
 
-                VStack(alignment: .leading, spacing: 2) {
-                    Button {
-                        showProfileViewSheet = true
-                    } label: {
-                        Text(username)
-                            .fontWeight(.bold)
-                            .foregroundStyle(.black)
-                    }
+                Button {
+                    showProfileViewSheet = true
+                } label: {
+                    Text(username)
+                        .font(.headline)
+                        .foregroundStyle(.black)
                 }
 
                 Spacer()
 
-                Button(action: {
-                }) {
-                    Text("Add Friend")
+                // Friend Button — FIXED (no more maxWidth)
+                Button(action: toggleFriend) {
+                    Text(isFriend ? "Friends ✓" : "Add Friend")
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 6)
                 }
                 .buttonStyle(.borderedProminent)
-                .tint(.red)
+                .tint(isFriend ? .green : .red)
+                .controlSize(.small)
+
             }
             .padding(.horizontal)
-            .padding(.vertical, 8)
 
-            ZStack {
-                if let data = post.photo,
-                   let uiImage = UIImage(data: data) {
-                    Image(uiImage: uiImage)
-                        .resizable()
-                        .scaledToFill()
-                        .frame(maxWidth: .infinity)
-                        .aspectRatio(1, contentMode: .fit)
-                        .clipped()
-                } else {
-                    Rectangle()
-                        .fill(Color.gray.opacity(0.25))
-                        .frame(maxWidth: .infinity)
-                        .aspectRatio(1, contentMode: .fit)
-                        .overlay(
-                            Image(systemName: "photo")
-                                .font(.largeTitle)
-                                .foregroundStyle(.gray)
-                        )
-                }
+            // -------------------------------
+            // IMAGE
+            // -------------------------------
+            if let data = post.photo,
+               let uiImage = UIImage(data: data) {
+                Image(uiImage: uiImage)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(maxWidth: .infinity)
+                    .clipped()
+            } else {
+                Rectangle()
+                    .fill(Color.gray.opacity(0.25))
+                    .aspectRatio(1, contentMode: .fit)
+                    .overlay(
+                        Image(systemName: "photo")
+                            .font(.largeTitle)
+                            .foregroundStyle(.gray)
+                    )
             }
 
-            HStack {
-                HStack(spacing: 8) {
-                    // Current rating from the model
-                    Text(String(format: "%.1f", post.rating))
+            // -------------------------------
+            // RATING + COMMENT BUTTONS
+            // -------------------------------
+            HStack(spacing: 16) {
+
+                Text(String(format: "%.1f", post.rating))
+                    .font(.title3.bold())
+
+                Button { showRatingSheet = true } label: {
+                    Image(systemName: "star.circle.fill")
                         .font(.title2)
-
-                    Button {
-                        showRatingSheet = true
-                    } label: {
-                        Image(systemName: "star.circle.fill")   // or your mountain icon
-                            .font(.title2)
-                    }
-                    .tint(.red)
-
-                    Button {
-                        showCommentSheet = true
-                    } label: {
-                        Image(systemName: "bubble.right.fill")
-                            .font(.title2)
-                    }
-                    .tint(.red)
                 }
-                .padding(.vertical, 2)
-                .padding(.horizontal)
+                .tint(.red)
+
+                Button { showCommentSheet = true } label: {
+                    Image(systemName: "bubble.right.fill")
+                        .font(.title2)
+                }
+                .tint(.red)
 
                 Spacer()
             }
-            HStack {
-                (
-                    Text(username).fontWeight(.semibold)
-                    + Text(" ")
-                    + Text(post.caption)
-                )
-                .lineLimit(2)
+            .padding(.horizontal)
 
-                Spacer()
+            // -------------------------------
+            // COMMENTS
+            // -------------------------------
+            VStack(alignment: .leading, spacing: 8) {
+                ForEach(post.comment) { c in
+                    HStack(alignment: .top, spacing: 6) {
+                        Text(c.user)
+                            .font(.caption)
+                            .fontWeight(.bold)
+
+                        Text(c.comment)
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                }
             }
-
             .padding(.horizontal)
             .padding(.bottom, 8)
         }
-        .sheet(isPresented: $showRatingSheet) {
-            // Make sure RateWorkout has init(post: Post) and saves post.rating
-            RateWorkout(post: post)
-        }
+        .padding(.vertical, 8)  // <-- gives each post breathing room
+        .sheet(isPresented: $showRatingSheet) { RateWorkout(post: post) }
         .sheet(isPresented: $showCommentSheet) {
             CommentSheet(commentText: $newCommentText) {
-                // TODO: later, create a Comment(model) and append to post.comment, then save
-                print("User wrote comment: \(newCommentText)")
+                saveComment(newCommentText)
+                newCommentText = ""
             }
         }
         .sheet(isPresented: $showProfileViewSheet) {
-            // You can later add a ProfileView(user: author) if you want
-            ProfileView()
+            if let author = post.author {
+                ProfileView(user: author)
+            } else {
+                Text("User not found")
+            }
         }
+    }
+
+    //Friend Logic
+    private var isFriend: Bool {
+        guard let me = activeUser, let author = author else { return false }
+        return me.friendsList.contains(where: { $0.id == author.id })
+    }
+
+    private func toggleFriend() {
+        guard let me = activeUser, let author = author else { return }
+
+        if isFriend {
+            me.friendsList.removeAll(where: { $0.id == author.id })
+        } else {
+            me.friendsList.append(author)
+        }
+
+        try? modelContext.save()
+    }
+
+    private func saveComment(_ text: String) {
+        guard let active = activeUser else { return }
+        let newComment = Comment(timestamp: Date(), user: active.userName, comment: text)
+        post.comment.append(newComment)
+        try? modelContext.save()
     }
 }
 
+
+//Preview
 #Preview {
-    let container = try! ModelContainer(for: User.self, Post.self, Workout.self, Exercise.self, Sets.self, Comment.self)
+    let container = try! ModelContainer(
+        for: User.self, Post.self, Workout.self, Exercise.self, Sets.self, Comment.self
+    )
     let context = container.mainContext
 
-    let user = User(userName: "Sam Sulek",
-                    profilePicture: nil,
-                    posts: [],
-                    friendsList: [],
-                    workouts: [],
-                    active: true)
+    let user = User(
+        userName: "Sam Sulek",
+        profilePicture: nil,
+        posts: [],
+        friendsList: [],
+        workouts: [],
+        active: true
+    )
 
-    let post = Post(photo: nil,
-                    timestamp: .now,
-                    caption: "This is a preview chest day post!",
-                    rating: 7.5,
-                    comment: [],
-                    author: user,
-                    workout: nil)
+    let post = Post(
+        photo: nil,
+        timestamp: .now,
+        caption: "Preview chest day post!",
+        rating: 7.5,
+        comment: [],
+        author: user,
+        workout: nil
+    )
 
     context.insert(user)
     context.insert(post)

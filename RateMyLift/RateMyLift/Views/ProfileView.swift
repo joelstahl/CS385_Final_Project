@@ -6,137 +6,77 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ProfileView: View {
-    //Should take user in and query for [Post]
-    @State var post: Post = Post()
-    
-    @State var showFriendsListSheet = false
-    
-    let columns = [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())]
-    let imageDimension = UIScreen.main.bounds.width / 3
-    
+    @Bindable var user: User
+
     var body: some View {
-        ScrollView{
-            VStack{
-                HStack{
-//                    Image(systemName: "chevron.left")
-//                        .font(.title2)
-                    
-                    Spacer()
-                    
-                    Text("SamSulek")
-                        .font(.subheadline)
-                        .fontWeight(.semibold)
-                    Image(systemName: "checkmark.seal.fill").foregroundStyle(.red)
-                    
-                    Spacer()
-                }
-                
-                HStack {
-                    Image("Sam_and_cat")
+        ScrollView {
+            VStack(spacing: 16) {
+
+                // Profile picture
+                if let data = user.profilePicture,
+                   let uiImage = UIImage(data: data) {
+                    Image(uiImage: uiImage)
                         .resizable()
                         .scaledToFill()
-                        .frame(width:88, height: 88)
+                        .frame(width: 120, height: 120)
                         .clipShape(Circle())
-                        
-                    Spacer()
-                    
-                    HStack (spacing: 32){
-                        VStack(spacing: 4){
-                            Text("3,226")
-                                .font(.subheadline)
-                                .fontWeight(.semibold)
-                            Text("Lifts")
-                                .font(.caption)
-                        }
-                        VStack(spacing: 4){
-                            Text("567")
-                                .font(.subheadline)
-                                .fontWeight(.semibold)
-                            Text("Posts")
-                                .font(.caption)
-                        }
-                        
-                        VStack(spacing: 4){
-                            Text("120")
-                                .font(.subheadline)
-                                .fontWeight(.semibold)
-                            Text("Friends")
-                                .font(.caption)
-                        }
-                    }.padding(30)
+                } else {
+                    Circle()
+                        .fill(.gray.opacity(0.3))
+                        .frame(width: 120, height: 120)
+                        .overlay(Image(systemName: "person.fill").font(.largeTitle))
                 }
-                
-                VStack(alignment: .leading, spacing: 2) {
-                    Text("Sam Sulek").font(.footnote).fontWeight(.semibold)
-                    Text("I like cats, lifting, and clash royale").font(.footnote).fontWeight(.semibold)
-                } .frame(maxWidth: .infinity, alignment: .leading).padding(.vertical, 4)
-                
-                HStack(spacing: -12){
-                    Image("Sam_and_cat")
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width:32, height: 32)
-                        .clipShape(Circle())
-                        .overlay(Circle().stroke(Color.white, lineWidth: 2))
-                    Image("Sam_and_cat")
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width:32, height: 32)
-                        .clipShape(Circle())
-                        .overlay(Circle().stroke(Color.white, lineWidth: 2))
-                    Image("Sam_and_cat")
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width:32, height: 32)
-                        .clipShape(Circle())
-                        .overlay(Circle().stroke(Color.white, lineWidth: 2))
-                    HStack (spacing: 2){
-                        Text("Friends with")
-                        Text("CBUM,Tren Twins").fontWeight(.semibold)
-                        Text("and")
-                        Text("2 others")
-                    }
-                    .font(.caption)
-                    .padding(.leading)
-                }
-                
-                HStack{
-                    Button{showFriendsListSheet = true} label: {
-                        Text("View Friends")
-                    }
-                    
-                    Button(action: {}) {
-                        Text("Add Friend")
-                            .tint(.red)
-                    }
-                }.buttonStyle(.borderedProminent).tint(.red).foregroundStyle(.white).padding(.vertical, 8)
-                
-                ScrollView{
-                    LazyVGrid(columns: columns, spacing: 0) {
-                        ForEach(0..<15, id: \.self) { index in
-                            NavigationLink{
-                                PostDetails(post: post)
-                            } label: {
-                                PostCard()
-                            }
-                        }
+
+                // Username
+                Text(user.userName)
+                    .font(.title)
+                    .bold()
+
+                // Friend count (if you use this)
+                Text("\(user.friendsList.count) Friends")
+                    .foregroundStyle(.secondary)
+
+                Divider().padding(.horizontal)
+
+                // Posts header
+                Text("Posts")
+                    .font(.headline)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal)
+
+                // This shows all posts by this user
+                LazyVStack(spacing: 0) {
+                    ForEach(user.posts) { post in
+                        PostView(post: post)
                     }
                 }
-                
             }
-            .padding(8)
-        }
-        .sheet(isPresented: $showFriendsListSheet) {
-            FriendsList()
+            .padding(.top, 24)
         }
     }
 }
 
-
 #Preview {
-    NavigationStack {
-        ProfileView()
-    }
+    let container = try! ModelContainer(
+        for: User.self, Post.self, Workout.self, Exercise.self, Sets.self, Comment.self,
+        configurations: ModelConfiguration(isStoredInMemoryOnly: true)
+    )
+    let context = container.mainContext
+
+    let user = User(
+        userName: "Preview User",
+        profilePicture: nil,
+        posts: [],
+        friendsList: [],
+        workouts: [],
+        active: true
+    )
+
+    context.insert(user)
+
+    return ProfileView(user: user)
+        .modelContainer(container)
 }
