@@ -35,6 +35,12 @@
 // this helped when we changed our model and our app kept crashing. We changed the new struct attributes to be optional
 // https://chatgpt.com/c/6930fe3b-c61c-832d-811f-732c32c2121b
 // this helped with profileView navigation crashing and using "selected post" for passing a post into postDetails view.
+//https://chatgpt.com/share/69312809-739c-8002-8815-dde54df3a70c
+// this helped to figure out why when actually running the project the view would shift to the left but in the preview window it was running fine
+// https://chatgpt.com/share/69312890-f440-8002-b97c-47a5c2aa94ec
+// this was used to figure out why a function that was working in a different view would not work in profileFromFeed with how the bool function worked
+// https://chatgpt.com/share/69312e21-13fc-8002-9f32-b31cdccf4400
+// Used for idea on how the RateWorkout sheet shoud look
 
 
 

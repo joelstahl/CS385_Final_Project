@@ -67,7 +67,7 @@ struct PostView: View {
 
                 Spacer()
 
-                // Friend Button — FIXED (no more maxWidth)
+                // Friend Button
                 Button(action: toggleFriend) {
                     Text(isFriend ? "Friends ✓" : "Add Friend")
                         .padding(.horizontal, 16)

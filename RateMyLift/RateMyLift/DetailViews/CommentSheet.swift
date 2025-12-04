@@ -11,10 +11,10 @@ struct CommentSheet: View {
     @Environment(\.dismiss) private var dismiss
     
     @Binding var commentText: String
-    var onPost: (() -> Void)? = nil     // optional callback
+    var onPost: (() -> Void)? = nil
     
     @State private var isEditing: Bool = false
-    let maxLength: Int = 250            // change if you want
+    let maxLength: Int = 250
     
     var body: some View {
         NavigationStack {
@@ -26,7 +26,6 @@ struct CommentSheet: View {
                 
                 // Comment box
                 ZStack(alignment: .topLeading) {
-                    // Placeholder
                     if commentText.isEmpty {
                         Text("Write something about this workout…")
                             .foregroundColor(.secondary)
@@ -44,7 +43,6 @@ struct CommentSheet: View {
                         }
                 }
                 
-                // Character count
                 HStack {
                     Spacer()
                     Text("\(commentText.count)/\(maxLength)")
@@ -56,11 +54,6 @@ struct CommentSheet: View {
                 
                 // Post button
                 Button {
-                    // Optional: enforce max length
-                    if commentText.count > maxLength {
-                        commentText = String(commentText.prefix(maxLength))
-                    }
-                    
                     onPost?()
                     dismiss()
                 } label: {

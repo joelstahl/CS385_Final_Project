@@ -22,7 +22,7 @@ struct FriendsList: View {
             List {
                 ForEach(friends) { friend in
                     NavigationLink {
-                        ProfileView(user: friend)    // <-- show their real profile
+                        ProfileView(user: friend)
                     } label: {
                         HStack {
                             // Profile Circle

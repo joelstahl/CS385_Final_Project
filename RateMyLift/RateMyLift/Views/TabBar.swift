@@ -30,7 +30,7 @@ struct TabBar: View {
             
             NavigationStack {
                 if let active = activeUsers.first {
-                    ProfileView(user: active)   // <-- NOW CORRECT
+                    ProfileView(user: active)
                 } else {
                     Text("No active user found")
                 }
