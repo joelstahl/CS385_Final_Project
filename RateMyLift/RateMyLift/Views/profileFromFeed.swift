@@ -135,20 +135,22 @@ struct profileFromFeedView: View {
         }
     }
     private var isFriend: Bool {
-        let me = activeUser
-        return ((me?.friendsList.contains(where: { $0.id == user.id })) != nil)
+        guard let me = activeUser else { return false }
+        return me.friendsList.contains(where: { $0.id == user.id })
     }
 
     private func toggleFriend() {
-        let me = activeUser
+        guard let me = activeUser else { return }
+
         if isFriend {
-            me?.friendsList.removeAll(where: { $0.id == user.id })
+            me.friendsList.removeAll(where: { $0.id == user.id })
         } else {
-            me?.friendsList.append(user)
+            me.friendsList.append(user)
         }
 
         try? modelContext.save()
     }
+
 }
 
 #Preview {
