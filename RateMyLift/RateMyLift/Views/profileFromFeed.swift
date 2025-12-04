@@ -13,6 +13,7 @@ struct profileFromFeedView: View {
     @State var post: Post = Post()
     @Bindable var user: User
     @State var showFriendsList = false
+    @State private var selectedPost: Post? = nil
     
     @Environment(\.modelContext) private var modelContext
     @Query(filter: #Predicate<User> { $0.active == true })
@@ -108,6 +109,9 @@ struct profileFromFeedView: View {
                        
                        LazyVGrid(columns: columns, spacing: 0){
                            ForEach(user.posts){ post in
+                               Button{
+                                   selectedPost = post
+                               }label: {
                                if let data = post.photo,
                                   let uiImage = UIImage(data: data) {
                                    Image(uiImage: uiImage)
@@ -122,15 +126,19 @@ struct profileFromFeedView: View {
                                        .border(Color.white)
                                        .clipped()
                                        .overlay(
-                                           Image(systemName: "photo")
-                                               .font(.largeTitle)
-                                               .foregroundStyle(.gray)
+                                        Image(systemName: "photo")
+                                            .font(.largeTitle)
+                                            .foregroundStyle(.gray)
                                        )
+                                    }
                                }
                            }
                        }
                    }
                    .sheet(isPresented: $showFriendsList) { FriendsList() }
+                   .sheet(item: $selectedPost) { post in
+                       PostDetails(post: post)
+                   }
                    .padding(8)
         }
     }
