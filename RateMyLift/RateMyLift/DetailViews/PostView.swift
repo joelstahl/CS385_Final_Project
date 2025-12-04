@@ -9,6 +9,8 @@
 //  PostView.swift
 //  RateMyLift
 //
+//If you click on the picture to navigate it will crash in preview, but fully functional
+// in the simulator
 
 import SwiftUI
 import SwiftData

@@ -10,9 +10,10 @@ import SwiftData
 
 struct ProfileView: View {
 
-    @State var post: Post = Post()
+    @State private var selectedPost: Post? = nil
     @Bindable var user: User
     @State var showFriendsList = false
+    @State var showPostDetailsSheet = false
     
     let columns = [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())]
     let imageDimension = UIScreen.main.bounds.width / 3
@@ -94,6 +95,9 @@ struct ProfileView: View {
                        
                        LazyVGrid(columns: columns, spacing: 0){
                            ForEach(user.posts){ post in
+                               Button{
+                                   selectedPost = post
+                               }label: {
                                if let data = post.photo,
                                   let uiImage = UIImage(data: data) {
                                    Image(uiImage: uiImage)
@@ -108,19 +112,24 @@ struct ProfileView: View {
                                        .border(Color.white)
                                        .clipped()
                                        .overlay(
-                                           Image(systemName: "photo")
-                                               .font(.largeTitle)
-                                               .foregroundStyle(.gray)
+                                        Image(systemName: "photo")
+                                            .font(.largeTitle)
+                                            .foregroundStyle(.gray)
                                        )
+                                    }
                                }
                            }
                        }
                    }
                    .sheet(isPresented: $showFriendsList) { FriendsList() }
+                   .sheet(item: $selectedPost) { post in
+                       PostDetails(post: post)
+                   }
                    .padding(8)
                }
     }
 }
+
 
 #Preview {
     let container = try! ModelContainer(
