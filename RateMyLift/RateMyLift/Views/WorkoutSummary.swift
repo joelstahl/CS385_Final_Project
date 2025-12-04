@@ -48,6 +48,17 @@ struct WorkoutSummary: View {
             
             Divider()
             
+            ForEach(session.exercises){ exercise in
+                HStack{
+                    Text(exercise.name + ":").bold()
+                    ForEach(exercise.sets){ set in
+                        Text("\(set.reps)x\(set.weight)")
+                    }
+                }
+            }
+            
+            Divider()
+            
             Button("Save Workout") {
                 saveWorkout()
             }
@@ -83,7 +94,7 @@ struct WorkoutSummary: View {
             end: session.endDate,
             totalcalories: session.calories,
             avgHeartRate: session.avgHR,
-            exercises: session.exercises // already [Exercise]
+            exercises: session.exercises
         )
         
         // Attach to the user

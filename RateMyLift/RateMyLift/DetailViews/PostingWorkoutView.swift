@@ -95,7 +95,6 @@ struct PostingWorkoutView: View {
                         .frame(minHeight: 80)
                         .lineLimit(3)
                 }
-                
             }
             .padding()
             Button(action: createPost){

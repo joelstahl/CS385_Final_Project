@@ -13,15 +13,19 @@ import PhotosUI
 final class User {
     var userName: String
     var profilePicture: Data?
+    var name: String?
+    var bio: String?
     var posts: [Post]
     var friendsList: [User]
     var workouts: [Workout]
     var active: Bool
     
 
-    init( userName: String, profilePicture: Data?, posts: [Post], friendsList: [User], workouts: [Workout], active: Bool = false) {
+    init( userName: String, profilePicture: Data?, name: String?, bio: String?, posts: [Post], friendsList: [User], workouts: [Workout], active: Bool = false) {
         self.userName = userName
         self.profilePicture = profilePicture
+        self.name = name
+        self.bio = bio
         self.posts = posts
         self.friendsList = friendsList
         self.workouts = workouts
@@ -30,6 +34,8 @@ final class User {
     
     init() {
         self.userName = "Current User"
+        self.name = "My name"
+        self.bio = "My bio I like to lift and stuff"
         self.profilePicture = nil
         self.posts = [Post()]
         self.friendsList = []
@@ -70,20 +76,7 @@ final class Post {
         self.author = nil
         self.workout = Workout()
     }
-    //This causes infinite recursion!!!!!
-    //Must fix later
 }
-//extension Post {
-//    static let sample = Post(
-//        photo: nil,
-//        timestamp: .now,
-//        caption: "Sample post",
-//        rating: 8.5,
-//        comment: [Comment()],
-//        author: nil,
-//        workout: nil
-//    )
-//}
 
 
 @Model

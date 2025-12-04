@@ -80,8 +80,8 @@ struct ProfileView: View {
                        }
                        
                        VStack(alignment: .leading, spacing: 2) {
-                           Text("Sam Sulek").font(.footnote).fontWeight(.semibold)
-                           Text("I like cats, lifting, and clash royale").font(.footnote).fontWeight(.semibold)
+                           Text(user.name ?? "Name").font(.footnote).fontWeight(.semibold)
+                           Text(user.bio ?? "Bio").font(.footnote).fontWeight(.semibold)
                        } .frame(maxWidth: .infinity, alignment: .leading).padding(.vertical, 4)
                        
                        HStack{
@@ -141,6 +141,8 @@ struct ProfileView: View {
     let user = User(
         userName: "Preview User",
         profilePicture: nil,
+        name: "Cool guy",
+        bio: "Im a cool guy",
         posts: [],
         friendsList: [],
         workouts: [],

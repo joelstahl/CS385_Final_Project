@@ -85,8 +85,8 @@ struct profileFromFeedView: View {
                        }
                        
                        VStack(alignment: .leading, spacing: 2) {
-                           Text("Sam Sulek").font(.footnote).fontWeight(.semibold)
-                           Text("I like cats, lifting, and clash royale").font(.footnote).fontWeight(.semibold)
+                           Text(user.name ?? "Name").font(.footnote).fontWeight(.semibold)
+                           Text(user.bio ?? "bio").font(.footnote).fontWeight(.semibold)
                        } .frame(maxWidth: .infinity, alignment: .leading).padding(.vertical, 4)
                        
                        HStack{
@@ -99,12 +99,9 @@ struct profileFromFeedView: View {
                            
                            Button(action: toggleFriend) {
                                Text(isFriend ? "Friends ✓" : "Add Friend")
-                                   .padding(.horizontal, 16)
-                                   .padding(.vertical, 6)
                            }
                            .buttonStyle(.borderedProminent)
                            .tint(isFriend ? .green : .red)
-                           .controlSize(.small)
                        }.buttonStyle(.borderedProminent).tint(.red).foregroundStyle(.white).padding(.vertical, 8)
                        
                        LazyVGrid(columns: columns, spacing: 0){
@@ -171,6 +168,8 @@ struct profileFromFeedView: View {
     let user = User(
         userName: "Preview User",
         profilePicture: nil,
+        name: "Cool guy",
+        bio: "Im a cool guy",
         posts: [],
         friendsList: [],
         workouts: [],

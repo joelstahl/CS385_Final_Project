@@ -62,9 +62,9 @@ struct FriendsList: View {
     let context = container.mainContext
 
     // Example preview users
-    let u1 = User(userName: "PreviewUser", profilePicture: nil, posts: [], friendsList: [], workouts: [], active: true)
-    let f1 = User(userName: "Cbum", profilePicture: nil, posts: [], friendsList: [], workouts: [], active: false)
-    let f2 = User(userName: "TrenTwins", profilePicture: nil, posts: [], friendsList: [], workouts: [], active: false)
+    let u1 = User(userName: "PreviewUser", profilePicture: nil, name: "Cool guy", bio: "Im a cool guy", posts: [], friendsList: [], workouts: [], active: true)
+    let f1 = User(userName: "Cbum", profilePicture: nil,name: "Cool guy", bio: "Im a cool guy", posts: [], friendsList: [], workouts: [], active: false)
+    let f2 = User(userName: "TrenTwins", profilePicture: nil, name: "Cool guy", bio: "Im a cool guy", posts: [], friendsList: [], workouts: [], active: false)
 
     u1.friendsList = [f1, f2]
 

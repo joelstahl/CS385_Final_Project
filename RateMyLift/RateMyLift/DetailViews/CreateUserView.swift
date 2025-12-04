@@ -13,23 +13,23 @@ struct CreateUserView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     @Query private var users: [User]
-    //@State var user: User
     @State var username: String = ""
+    @State var name: String = ""
+    @State var bio: String = ""
     @State var selectedPhoto: PhotosPickerItem?
     @State var selectedPhotoData: Data?
-    //@State var posts : [Posts] = []
-    //@State var workouts: [Workouts] = []
-    //@State var friends: [User] = []
-    //@State var isActive: Bool = true
-    
-    
-    
     
     var body: some View {
         NavigationStack{
             Form{
                 Section(header: Text("Username")){
                     TextField("Username", text: $username)
+                }
+                Section(header: Text("Name")){
+                    TextField("Your Name", text: $name)
+                }
+                Section(header: Text("Bio")){
+                    TextField("A little about yourself", text: $bio)
                 }
                 Section(header: Text("Add A Picture For Your Profile")){
                     PhotosPicker(selection: $selectedPhoto, matching: .images, photoLibrary: .shared()) {
@@ -66,11 +66,36 @@ struct CreateUserView: View {
                 }
                 Section(header: Text("User Profile")){
                     HStack{
-                        Circle()
-                            .fill(.gray.opacity(0.4))
-                            .frame(width: 36, height: 36)
-                            .overlay(Image(systemName: "person.fill"))
-                        Text(username)
+                        if let data = selectedPhotoData,
+                           let uiImage = UIImage(data: data) {
+                            Image(uiImage: uiImage)
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width:36, height: 36)
+                                .clipShape(Circle())
+                        } else {
+                            Circle()
+                                .frame(width:36, height: 36)
+                                .overlay(
+                                    Image(systemName: "photo")
+                                        .font(.caption)
+                                        .foregroundStyle(.gray)
+                                )
+                        }
+                        VStack(alignment: .leading){
+                            HStack{
+                                Text("Username: ").bold()
+                                Text(username)
+                            }
+                            HStack{
+                                Text("Name: ").bold()
+                                Text(name)
+                            }
+                            HStack{
+                                Text("Bio: ").bold()
+                                Text(bio)
+                            }
+                        }
                     }
                 }
                 Section{
@@ -95,6 +120,8 @@ struct CreateUserView: View {
             let newUser = User(
                 userName: username,
                 profilePicture: selectedPhotoData,
+                name: name,
+                bio: bio,
                 posts: [],
                 friendsList: [],
                 workouts: [],

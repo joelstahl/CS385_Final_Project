@@ -33,6 +33,8 @@ struct FeedList: View {
     let user = User(
         userName: "Preview User",
         profilePicture: nil,
+        name: "Cool guy",
+        bio: "Im a cool guy",
         posts: [],
         friendsList: [],
         workouts: [],

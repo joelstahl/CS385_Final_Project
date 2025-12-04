@@ -53,35 +53,42 @@ struct DuringWorkoutView: View {
                         .padding()
                 }
             }
+            NavigationLink(
+                            "Workout Summary",
+                            isActive: $showSummary,
+                            destination: {
+                                WorkoutSummary()
+                                    .environmentObject(session)
+                            }
+                        )
             
             // EXERCISES
             VStack {
-                Text("Current Exercises")
-                    .font(.headline)
-                
                 Button(action: {
                     showAddExerciseView = true
                 }) {
                     Text("Add Exercise")
                 }
-            }
-            
-            // NAVIGATION TO SUMMARY
-            NavigationLink(
-                "Workout Summary",
-                isActive: $showSummary,
-                destination: {
-                    WorkoutSummary()
-                        .environmentObject(session)
+                Text("Current Exercises")
+                    .font(.headline)
+                ForEach(self.session.exercises){ exercise in
+                    HStack{
+                        Text(exercise.name + ":").bold()
+                        ForEach(exercise.sets){ set in
+                            Text("\(set.reps)x\(set.weight)")
+                        }
+                    }
                 }
-            )
-
+            }
         }
         .buttonStyle(.borderedProminent)
         .tint(.red)
         .padding(.vertical, 8)
-        .sheet(isPresented: $showAddExerciseView) {
-            AddExerciseView()
+        .sheet(isPresented: $showAddExerciseView){
+            AddExerciseView {
+                exercise in
+                self.session.exercises.append(exercise)
+            }
         }
         .onDisappear {
             // make sure timer is cleaned up
@@ -157,8 +164,6 @@ struct DuringWorkoutView: View {
                 self.session.exerciseMinutes = value
             }
         }
-        
-        // Navigate to summary
         showSummary = true
     }
 }

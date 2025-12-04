@@ -127,18 +127,25 @@ struct PostView: View {
                 Spacer()
             }
             .padding(.horizontal)
-
+            HStack{
+                Text(username)
+                    .bold()
+                Text(":")
+                Text(post.caption)
+            }
+            .padding(.horizontal)
+            
             // -------------------------------
             // COMMENTS
             // -------------------------------
             VStack(alignment: .leading, spacing: 8) {
-                ForEach(post.comment) { c in
+                ForEach(post.comment) { comment in
                     HStack(alignment: .top, spacing: 6) {
-                        Text(c.user)
+                        Text(comment.user)
                             .font(.caption)
                             .fontWeight(.bold)
 
-                        Text(c.comment)
+                        Text(comment.comment)
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
@@ -202,6 +209,8 @@ struct PostView: View {
     let user = User(
         userName: "Sam Sulek",
         profilePicture: nil,
+        name: "Cool guy",
+        bio: "Im a cool guy",
         posts: [],
         friendsList: [],
         workouts: [],

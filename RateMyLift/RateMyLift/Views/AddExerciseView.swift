@@ -11,8 +11,11 @@ struct AddExerciseView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     
+    @State var showAddSetSheet = false
+    
     @State private var name: String = ""
-    @State private var sets: Int = 0
+    let addExercise: (Exercise) -> Void
+    @State var sets: [Sets] = []
     
     var body: some View {
         NavigationStack{
@@ -20,8 +23,14 @@ struct AddExerciseView: View {
                 Section(header: Text("Name")){
                     TextField("Name", text: $name)
                 }
-                Section(header: Text("Sets")){
-                    Stepper("Sets \(sets)", value: $sets, in: 1...10)
+                Button(action: {
+                    showAddSetSheet = true
+                }) {
+                    Text("Add Set")
+                }
+                ForEach(sets){
+                     set in
+                    Text("\(set.reps)x\(set.weight) lbs")
                 }
             }
             .toolbar {
@@ -31,14 +40,20 @@ struct AddExerciseView: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     
                     Button("Save") {
-//                        let exercise = Exercise(
-//                            name: name,
-//                            sets: sets
-//                        )
-//                        addExercise(exercise)
+                        let exercise = Exercise(
+                            name: name,
+                            sets: sets,
+                        )
+                        addExercise(exercise)
                         dismiss()
                     }
                     .disabled(name.isEmpty)
+                }
+            }
+            .sheet(isPresented: $showAddSetSheet){
+                AddSetsView {
+                    set in
+                    sets.append(set)
                 }
             }
         }
@@ -46,5 +61,5 @@ struct AddExerciseView: View {
 }
 
 #Preview {
-    AddExerciseView()
+    AddExerciseView(addExercise: {_ in})
 }
