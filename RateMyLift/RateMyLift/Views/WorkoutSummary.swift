@@ -43,10 +43,8 @@ struct WorkoutSummary: View {
             
             Divider()
             
-            Text("Steps: \(Int(session.steps))")
             Text("Calories: \(Int(session.calories)) kcal")
             Text("Avg HR: \(Int(session.avgHR)) bpm")
-            Text("Exercise Time: \(Int(session.exerciseMinutes)) min")
             
             Divider()
             
@@ -54,6 +52,7 @@ struct WorkoutSummary: View {
                 saveWorkout()
             }
             .buttonStyle(.borderedProminent)
+            .tint(.red)
             
             if let msg = saveMessage {
                 Text(msg)

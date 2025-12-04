@@ -1,18 +1,23 @@
 //
-//  ProfileView.swift
+//  profileFromFeed.swift
 //  RateMyLift
 //
-//  Created by Joel Stahl on 11/16/25.
+//  Created by Joel Stahl on 12/3/25.
 //
 
 import SwiftUI
 import SwiftData
 
-struct ProfileView: View {
+struct profileFromFeedView: View {
 
     @State var post: Post = Post()
     @Bindable var user: User
     @State var showFriendsList = false
+    
+    @Environment(\.modelContext) private var modelContext
+    @Query(filter: #Predicate<User> { $0.active == true })
+    var activeUsers: [User]
+    var activeUser: User? { activeUsers.first }
     
     let columns = [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())]
     let imageDimension = UIScreen.main.bounds.width / 3
@@ -90,6 +95,15 @@ struct ProfileView: View {
                            label: {
                                Text("View Friends")
                            }
+                           
+                           Button(action: toggleFriend) {
+                               Text(isFriend ? "Friends ✓" : "Add Friend")
+                                   .padding(.horizontal, 16)
+                                   .padding(.vertical, 6)
+                           }
+                           .buttonStyle(.borderedProminent)
+                           .tint(isFriend ? .green : .red)
+                           .controlSize(.small)
                        }.buttonStyle(.borderedProminent).tint(.red).foregroundStyle(.white).padding(.vertical, 8)
                        
                        LazyVGrid(columns: columns, spacing: 0){
@@ -118,7 +132,22 @@ struct ProfileView: View {
                    }
                    .sheet(isPresented: $showFriendsList) { FriendsList() }
                    .padding(8)
-               }
+        }
+    }
+    private var isFriend: Bool {
+        let me = activeUser
+        return ((me?.friendsList.contains(where: { $0.id == user.id })) != nil)
+    }
+
+    private func toggleFriend() {
+        let me = activeUser
+        if isFriend {
+            me?.friendsList.removeAll(where: { $0.id == user.id })
+        } else {
+            me?.friendsList.append(user)
+        }
+
+        try? modelContext.save()
     }
 }
 
@@ -140,6 +169,7 @@ struct ProfileView: View {
 
     context.insert(user)
 
-    return ProfileView(user: user)
+    return profileFromFeedView(user: user)
         .modelContainer(container)
 }
+

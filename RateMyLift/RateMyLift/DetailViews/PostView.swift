@@ -25,6 +25,7 @@ struct PostView: View {
     @State private var showCommentSheet = false
     @State private var newCommentText = ""
     @State private var showProfileViewSheet = false
+    @State private var showPostDetailsSheet = false
 
     private var author: User? { post.author }
     private var username: String { author?.userName ?? "Unknown User" }
@@ -73,29 +74,32 @@ struct PostView: View {
                 .buttonStyle(.borderedProminent)
                 .tint(isFriend ? .green : .red)
                 .controlSize(.small)
-
             }
             .padding(.horizontal)
 
             // -------------------------------
             // IMAGE
             // -------------------------------
-            if let data = post.photo,
-               let uiImage = UIImage(data: data) {
-                Image(uiImage: uiImage)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(maxWidth: .infinity)
-                    .clipped()
-            } else {
-                Rectangle()
-                    .fill(Color.gray.opacity(0.25))
-                    .aspectRatio(1, contentMode: .fit)
-                    .overlay(
-                        Image(systemName: "photo")
-                            .font(.largeTitle)
-                            .foregroundStyle(.gray)
-                    )
+            Button{
+                showPostDetailsSheet = true
+            }label:{
+                if let data = post.photo,
+                   let uiImage = UIImage(data: data) {
+                    Image(uiImage: uiImage)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(maxWidth: .infinity)
+                        .clipped()
+                } else {
+                    Rectangle()
+                        .fill(Color.gray.opacity(0.25))
+                        .aspectRatio(1, contentMode: .fit)
+                        .overlay(
+                            Image(systemName: "photo")
+                                .font(.largeTitle)
+                                .foregroundStyle(.gray)
+                        )
+                }
             }
 
             // -------------------------------
@@ -143,6 +147,7 @@ struct PostView: View {
         }
         .padding(.vertical, 8)  // <-- gives each post breathing room
         .sheet(isPresented: $showRatingSheet) { RateWorkout(post: post) }
+        .sheet(isPresented: $showPostDetailsSheet) { PostDetails(post: post) }
         .sheet(isPresented: $showCommentSheet) {
             CommentSheet(commentText: $newCommentText) {
                 saveComment(newCommentText)
@@ -151,7 +156,7 @@ struct PostView: View {
         }
         .sheet(isPresented: $showProfileViewSheet) {
             if let author = post.author {
-                ProfileView(user: author)
+                profileFromFeedView(user: author)
             } else {
                 Text("User not found")
             }

@@ -8,19 +8,29 @@
 import SwiftUI
 
 struct PostDetails: View {
-    @State var post: Post
+    let post: Post
     
     
     var body: some View {
         ScrollView{
             VStack {
                 Text("Post Details").font(.title).bold()
-                ZStack{
+                if let data = post.photo,
+                   let uiImage = UIImage(data: data) {
+                    Image(uiImage: uiImage)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(maxWidth: .infinity)
+                        .clipped()
+                } else {
                     Rectangle()
                         .fill(Color.gray.opacity(0.25))
-                        .frame(maxWidth: .infinity) //Can add height: to make image smaller
                         .aspectRatio(1, contentMode: .fit)
-                        .overlay(Image(systemName:"photo"))
+                        .overlay(
+                            Image(systemName: "photo")
+                                .font(.largeTitle)
+                                .foregroundStyle(.gray)
+                        )
                 }
                 HStack() {
                     Text(String(format: "%.1f", post.rating))
@@ -34,9 +44,9 @@ struct PostDetails: View {
                 
                 HStack() {
                     Text("Total Cals:").bold()
-                    Text(String(format: "%.1f", post.workout!.totalcalories))
+                    Text(String(format: "%.1f", post.workout?.totalcalories ?? 0.0))
                     Text("Avg HR:").bold()
-                    Text(String(format: "%.1f", post.workout!.avgHeartRate))
+                    Text(String(format: "%.1f", post.workout?.avgHeartRate ?? 0.0))
                 }
                 .padding()
                 ForEach(post.workout!.exercises){ exercise in
