@@ -11,29 +11,29 @@
 //  Instagram style profile video: https://www.google.com/search?q=instragram+profile+in+swift+using+lazyvgrod&rlz=1C5OZZY_enUS1175US1175&oq=instragram+profile+in+swift+using+lazyvgrod&gs_lcrp=EgZjaHJvbWUyBggAEEUYOTIJCAEQIRgKGKABMgkIAhAhGAoYoAEyCQgDECEYChigATIJCAQQIRgKGKABMgcIBRAhGI8CMgcIBhAhGI8C0gEJMTE5MzVqMGo3qAIAsAIA&sourceid=chrome&ie=UTF-8#fpstate=ive&vld=cid:b8a4baef,vid:xKn5M5YsQas,st:0
 //  Dropdown selector https://www.google.com/search?q=how+to+create+a+dropdown+selector+in+swift&rlz=1C5OZZY_enUS1175US1175&oq=how+to+create+a+dropdown+selector+in+swift&gs_lcrp=EgZjaHJvbWUyBggAEEUYOTIICAEQABgWGB4yCAgCEAAYFhgeMggIAxAAGBYYHjINCAQQABiGAxiABBiKBTIHCAUQABjvBTIHCAYQABjvBTIHCAcQABjvBdIBCDc4OTZqMGo3qAIAsAIA&sourceid=chrome&ie=UTF-8
 // ChatGPT Links:
-// https://chatgpt.com/c/691b817e-b844-8333-a528-1340dfbb9b99
+// https://chatgpt.com/share/6939f28e-d538-8007-b625-aee8ce0289e6
 // fixing query issues
-// https://chatgpt.com/c/69220db3-30f4-832c-85cd-637b77871f69
+// https://chatgpt.com/share/6939e7d8-c308-8007-88fd-c625c179b373
 // help with error when following tutorial video
-// https://chatgpt.com/c/6922041d-39ec-8326-b710-1a6fc0d8ecd3
+// https://chatgpt.com/share/6939f2b7-4c18-8007-9761-5157b068e2af
 // advise on querying user and posts for views before build
-// https://chatgpt.com/c/69249cac-78fc-8320-9da9-1ed296742c8e
+// https://chatgpt.com/share/6939f2d2-c07c-8007-8b6a-1306155972df
 // this helped with an infinite recursion error
-// https://chatgpt.com/c/6923a38d-f538-8328-a91c-17cc98d4f323
+// https://chatgpt.com/share/6939f2e7-9860-8007-813a-965bb7a6af60
 // this helped by creating the workout session struct to allow for a temporary place to store data before assigning it to the user
-// https://chatgpt.com/c/69239637-d4a0-8330-a160-1e1681b0e0c9
+// https://chatgpt.com/share/6939f2fd-a82c-8007-9301-f20b4b14f6fa
 // helped with changing the healthkit query time from the whole day to a specific start and end
-// https://chatgpt.com/c/692492e8-1544-8322-8968-f8af05fbabb4
+// https://chatgpt.com/share/6939f310-f9dc-8007-af70-a2f8df19e43a
 // simple error, just wrapped in VStack
-// https://chatgpt.com/c/6924e6c1-1110-8326-9d3b-887d4d96fe73
+// https://chatgpt.com/share/6939f323-cc2c-8007-8eaa-dd5c88b082de
 // changed navigation link to use image as the label
-// https://chatgpt.com/c/6924e99c-d64c-8327-bcfc-a9c766c3f5de
+// https://chatgpt.com/share/6939f337-a648-8007-a295-2ec8dcb1131d
 // helped by externally wrapping profile view instead of in the view itself
-// https://chatgpt.com/c/6925f00a-59ac-8328-aaa3-ef3a030f1d92
+// https://chatgpt.com/share/6939f34b-598c-8007-b748-2f9fed24d78b
 // helped create drop down menu
-// https://chatgpt.com/c/69311261-ace0-8333-ab65-310c15bfae60
+// https://chatgpt.com/share/6939f361-2f54-8007-949e-f4f4e563c64c
 // this helped when we changed our model and our app kept crashing. We changed the new struct attributes to be optional
-// https://chatgpt.com/c/6930fe3b-c61c-832d-811f-732c32c2121b
+// https://chatgpt.com/share/6939f37a-0888-8007-92a4-07896bb735b6
 // this helped with profileView navigation crashing and using "selected post" for passing a post into postDetails view.
 //https://chatgpt.com/share/69312809-739c-8002-8815-dde54df3a70c
 // this helped to figure out why when actually running the project the view would shift to the left but in the preview window it was running fine
